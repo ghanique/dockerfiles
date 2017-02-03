@@ -1,4 +1,3 @@
 #!/bin/bash
 
-su user -c /usr/bin/code
-sleep infinity
+su user -c "/usr/bin/code -w $1"

@@ -1,12 +1,11 @@
 # Visual Studio Code in a container
 #	NOTE: Needs the redering device (yeah... idk)
 #
-# docker run -d \
+# docker run --rm \
 #    -v /tmp/.X11-unix:/tmp/.X11-unix \
 #    -v $HOME:/home/user \
 #    -e DISPLAY=unix$DISPLAY \
 #    --device /dev/dri \
-#    --name vscode \
 #    jess/vscode
 
 FROM debian:stretch
@@ -63,11 +62,10 @@ RUN buildDeps=' \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends \
 	&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
 	&& apt-get update && apt-get install -y nodejs --no-install-recommends \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& curl -sSL "https://az764295.vo.msecnd.net/stable/${CODE_COMMIT}/code_${CODE_VERSION}_amd64.deb" -o /tmp/vs.deb \
+	&& rm -rf /var/lib/apt/lists/*
+RUN curl -sSL "https://az764295.vo.msecnd.net/stable/${CODE_COMMIT}/code_${CODE_VERSION}_amd64.deb" -o /tmp/vs.deb \
 	&& dpkg -i /tmp/vs.deb \
-	&& rm -rf /tmp/vs.deb \
-	&& apt-get purge -y --auto-remove $buildDeps
+	&& rm -rf /tmp/vs.deb
 
 COPY start.sh /usr/local/bin/start.sh
 COPY local.conf /etc/fonts/local.conf

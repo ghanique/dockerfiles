@@ -1,0 +1,8 @@
+#!/bin/bash
+docker run -d --rm \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v /:/home/user \
+        -e DISPLAY=unix${DISPLAY} \
+        --device /dev/dri \
+        ghanique/vscode
+
